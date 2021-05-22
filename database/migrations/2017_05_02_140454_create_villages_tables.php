@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRegenciesTables extends Migration
+class CreateVillagesTables extends Migration
 {
     /**
      * Run the migrations.
@@ -20,9 +20,9 @@ class CreateRegenciesTables extends Migration
      */
     public function up()
     {
-        Schema::create('indoregion_regencies', function(Blueprint $table){
-            $table->char('id', 4)->index();
-            $table->char('province_id', 2);
+        Schema::create('indoregion_villages', function(Blueprint $table){
+            $table->char('id', 10)->index();
+            $table->char('district_id', 7);
             $table->string('name', 50);
         });
     }
@@ -34,6 +34,6 @@ class CreateRegenciesTables extends Migration
      */
     public function down()
     {
-        Schema::drop('indoregion_regencies');
+        Schema::drop('indoregion_villages');
     }
 }

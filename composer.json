@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
-        "azishapidin/indoregion": "^3.0",
+        "azishapidin/indoregion": "2.2.2",
         "doctrine/dbal": "^2.13",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
