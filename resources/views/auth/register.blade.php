@@ -169,7 +169,7 @@
         },
         methods: {
           checkEmail: function() {
-            var Cok = this;
+            var mail = this;
             axios.get('{{ route('api-register-check') }}', {
               params: {
                 email: this.email
@@ -177,7 +177,7 @@
             })
               .then(function (response){
                 if(response.data == 'Tersedia') {
-                  Cok.$toasted.show(
+                  mail.$toasted.show(
                       "Email Bisa Digunakan.",
                       {
                         position: "top-center",
@@ -185,9 +185,9 @@
                         duration: 1000,
                       }
                     );
-                    Cok.email_gaisok = false;
+                    mail.email_unavailable = false;
                 } else {
-                  Cok.$toasted.error(
+                  mail.$toasted.error(
                     "Maaf, tampaknya email sudah terdaftar pada sistem kami.",
                     {
                       position: "top-center",
@@ -195,7 +195,7 @@
                       duration: 1000,
                     }
                   );
-                  Cok.email_gaisok = true;
+                  mail.email_unavailable = true;
                 }
                 console.log(response)
               });
@@ -207,7 +207,7 @@
               email: "AdamMico@belajar.terosss",
               is_store_open: true,
               store_name: "",
-              email_gaisok: false
+              email_unavailable: false
           }
         },
       });
