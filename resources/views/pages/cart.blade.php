@@ -45,13 +45,7 @@
                     <td style="width: 20%;">
                        @if($cart->product->galleries)
                           <img
-                            src="{{ Storage::url($cart->product->galleries->first()->photos) }}"
-                            alt=""
-                            class="cart-image"
-                          />
-                          @else
-                           <img
-                            src="{{ Storage::url('assets/NoImages.jpg') }}"
+                            src="{{ Storage::url($cart->product->galleries->first()->photos ?? 'assets/NoImages.jpg') }}"
                             alt=""
                             class="cart-image"
                           />

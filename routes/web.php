@@ -43,8 +43,17 @@ Route::group(['middleware' => ['auth']], function() {
                 ->name('dashboard-product');
         Route::get('/dashboard/products/add', 'DashboardProductController@create')
                 ->name('dashboard-product-create');
+        Route::post('/dashboard/products', 'DashboardProductController@store')
+                ->name('dashboard-product-store');
         Route::get('/dashboard/products/{id}', 'DashboardProductController@detail')
                 ->name('dashboard-product-details');
+        Route::post('/dashboard/products/{id}', 'DashboardProductController@update')
+                ->name('dashboard-product-update');
+
+        Route::post('/dashboard/products/gallery/upload', 'DashboardProductController@uploadGallery')
+                ->name('dashboard-product-gallery-upload');
+        Route::get('/dashboard/products/gallery/delete/{id}', 'DashboardProductController@deleteGallery')
+                ->name('dashboard-product-gallery-delete');
 
         // Dashboard - Transaction
         Route::get('/dashboard/transactions', 'DashboardTransactionController@index')
@@ -57,11 +66,13 @@ Route::group(['middleware' => ['auth']], function() {
                 ->name('dashboard-setting-store');
         Route::get('/dashboard/account', 'DashboardSettingController@account')
                 ->name('dashboard-setting-account');
+        Route::post('/dashboard/account/{redirect}', 'DashboardSettingController@update')
+                ->name('dashboard-setting-redirect');
 });
 
 Route::prefix('admin')
         ->namespace('Admin')
-        ->middleware(['Auth', 'Admin'])
+        ->middleware(['auth', 'admin'])
         ->group(function() {
                 Route::get('/', 'DashboardController@index')->name('admin-dashboard'); // Home - Admin
                 Route::resource('category', 'CategoryController'); // Category - Admin

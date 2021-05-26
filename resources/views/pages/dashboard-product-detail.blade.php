@@ -15,7 +15,16 @@
         <div class="dashboard-content">
         <div class="row">
             <div class="col-12">
-            <form action="">
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        - {{ $error }}
+                    @endforeach
+                </div>
+            @endif
+            <form id="myForm" action="{{ route('dashboard-product-update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="users_id" value="{{ Auth::user()->id }}">
                 <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -24,11 +33,11 @@
                         <label for="name">Product Name</label>
                         <input
                             type="text"
+                            name="name"
                             class="form-control"
                             id="name"
                             aria-describedby="name"
-                            name="storeName"
-                            value="Papel La Casa"
+                            value="{{ $product->name }}"
                         />
                         </div>
                     </div>
@@ -36,27 +45,36 @@
                         <div class="form-group">
                         <label for="price">Price</label>
                         <input
-                            type="number"
-                            class="form-control"
+                            type="text"
+                            class="price form-control"
                             id="price"
                             aria-describedby="price"
                             name="price"
-                            value="200"
+                            value="{{ $product->price }}"
                         />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="">Category Product</label>
+                            <select name="categories_id" class="form-control">
+                                <option value="{{ $product->categories_id }}" holder>Tidak Diganti ({{ $product->category->name }})</option>  
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                         <label for="description">Description</label>
                         <textarea
-                            name="descrioption"
-                            id=""
+                            name="description"
+                            id="editor"
                             cols="30"
                             rows="4"
                             class="form-control"
-                        >
-The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air unit yet for unimaginable, all-day comfort. There's super breathable fabrics on the upper, while colours add a modern edge. Bring the past into the future with the Nike Air Max 2090, a bold look inspired by the DNA of the iconic Air Max 90. Brand-new Nike Air cushioning
-                        </textarea>
+                        >{!! $product->description !!}</textarea>
                         </div>
                     </div>
                     <div class="col">
@@ -78,55 +96,39 @@ The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air uni
             <div class="card">
                 <div class="card-body">
                 <div class="row">
+                    @foreach ($product->galleries as $gallery)
                     <div class="col-md-4">
                     <div class="gallery-container">
                         <img
-                        src="/images/product-card-1.png"
+                        src="{{ Storage::url($gallery->photos ?? '') }}"
                         alt=""
                         class="w-100"
                         />
-                        <a class="delete-gallery" href="#">
+                        <a class="delete-gallery" href="{{ route('dashboard-product-gallery-delete', $gallery->id) }}">
                         <img src="/images/icon-delete.svg" alt="" />
                         </a>
                     </div>
                     </div>
-                    <div class="col-md-4">
-                    <div class="gallery-container">
-                        <img
-                        src="/images/product-card-2.png"
-                        alt=""
-                        class="w-100"
-                        />
-                        <a class="delete-gallery" href="#">
-                        <img src="/images/icon-delete.svg" alt="" />
-                        </a>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="gallery-container">
-                        <img
-                        src="/images/product-card-3.png"
-                        alt=""
-                        class="w-100"
-                        />
-                        <a class="delete-gallery" href="#">
-                        <img src="/images/icon-delete.svg" alt="" />
-                        </a>
-                    </div>
-                    </div>
-                    <div class="col mt-3">
-                    <input
+                    @endforeach
+                    <div class="col-12">
+                    <form action="{{ route('dashboard-product-gallery-upload') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="products_id" value="{{ $product->id }}">
+                        <input
                         type="file"
+                        name="photos"
                         id="file"
                         style="display: none;"
-                        multiple
+                        onchange="form.submit()"
                     />
-                    <button
-                        class="btn btn-secondary btn-block"
-                        onclick="thisFileUpload();"
-                    >
+                        <button
+                        type="button"
+                        class="btn btn-secondary btn-block mt-3"
+                        onclick="thisFileUpload()"
+                        >
                         Add Photo
-                    </button>
+                        </button>
+                    </form>
                     </div>
                 </div>
                 </div>
@@ -139,13 +141,23 @@ The Nike Air Max 720 SE goes bigger than ever before with Nike's tallest Air uni
 @endsection
 
 @push('addon-script')
-    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-        <script>
+     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        CKEDITOR.replace('editor');
+    </script>
+    <script>
         function thisFileUpload() {
             document.getElementById("file").click();
         }
-        </script>
-        <script>
-            CKEDITOR.replace('editor');
-        </script>
+    </script>
+    <script>
+       $(document).ready(function(){
+        // Format mata uang.
+        $('.price').mask('000.000.000', {reverse: true});
+        });
+            $("#myForm").submit(function() {
+                $(".price").unmask();
+            });
+    </script>
 @endpush

@@ -118,7 +118,10 @@
                       >Settings</a
                     >
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/">Logout</a>
+                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                      @csrf
+                    <button class="dropdown-item" type="submit">Logout</button>
+                    </form>
                   </div>
                 </li>
                 <li class="nav-item">
@@ -131,7 +134,7 @@
               <ul class="navbar-nav d-block d-lg-none mt-3">
                 <li class="nav-item">
                   <a class="nav-link" href="#">
-                    Hi, Angga
+                    Hi, {{ Auth::user()->name }}
                   </a>
                 </li>
                 <li class="nav-item">
