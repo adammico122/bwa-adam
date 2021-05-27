@@ -56,6 +56,13 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Composer
+Composer Yang Saya Gunakan Pada Aplikasi Marketplace Saya Ini: 
+1. Indoregion ( https://github.com/azishapidin/indoregion )
+2. Doctrine/Dbal
+3. Datatables
+4. Dll.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
